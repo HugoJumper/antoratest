@@ -44,7 +44,7 @@ pf - Payment font (deprecated)
 WARNING: [.red]#Disclaimer: Cette documentation est fait dans le but d'un stage des erreurs d'orthographe peuvent être présent ainsi que des fautes de compréhension du sujet#
 ====
 
-image::logo-fog02.png[]
+image::https://quentin-dupont.com/wp-content/uploads/2021/04/fog.png[]
 
 
 [.red]#Les prérequis pour l'installation et l'utilisation de FOG sur votre Machine (Laptop ou bien même serveurs):#
