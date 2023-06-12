@@ -1,4 +1,2 @@
 * xref:Installation_fog.adoc[]
-* Lists
-** xref:lists/ordered-list.adoc[]
-** xref:lists/unordered-list.adoc[]
+
