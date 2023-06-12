@@ -1,6 +1,6 @@
 name: TestAntora
 version: 1
-start_page: Installation_fog.adoc
+start_page: .\Installation_fog.adoc
 asciidoc:
   attributes:
     source-language: asciidoc@
