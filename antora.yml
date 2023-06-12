@@ -1,6 +1,6 @@
 name: TestAntora
 version: 1
-start_page: inline-text-formatting.adoc
+start_page: Installation_fog.adoc
 asciidoc:
   attributes:
     source-language: asciidoc@
