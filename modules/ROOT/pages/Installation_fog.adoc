@@ -13,7 +13,7 @@
 :toclevels: 4
 :source-highlighter: highlightjs
 //icons: font
-:imagesdir: images
+:imagesdir: ./images
 :sectanchors: 
 //image::sunset.jpg[Sunset,300,400]
 //image::sunset.jpg[alt=Sunset,width=300,height=400]
