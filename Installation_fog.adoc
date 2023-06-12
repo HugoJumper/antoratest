@@ -1,0 +1,201 @@
+
+= Documentation FOG: Free Computer Imaging Solution sous Ubuntu 22.04 Server LTS
+:author: Hugo Tournache
+:email: hugo.tournache@ltpdampierre.fr
+:title-page:
+//firstname middlename lastname <email>firstname middlename lastname <email>; firstname middlename lastname <email>
+//Hugo Tournache <hugo.tournache@ltpdampierre.fr
+//Hugo Tournache <hugotournache@gmail.com>
+//doctype: book
+:sectnums:
+:toc:
+:toc-title:
+:toclevels: 4
+:source-highlighter: highlightjs
+//icons: font
+:imagesdir: ./images
+:sectanchors: 
+//image::sunset.jpg[Sunset,300,400]
+//image::sunset.jpg[alt=Sunset,width=300,height=400]
+:revnumber: // 30 mai 2023
+:revdate: // Lycée Dampierre
+:revremark: // SIO / SISR / Documentation Activité de stage
+//:version-label!: 
+//:version-label: Edition
+:experimental:
+:icons: font
+//:icon-set: fa
+////
+You can use font-based icons from any of the following icon sets in your PDF document:
+fa - Font Awesome 4 (default, deprecated)
+fas - Font Awesome - Solid
+fab - Font Awesome - Brands
+far - Font Awesome - Regular
+fi - Foundation Icons
+pf - Payment font (deprecated)
+////
+// saut da page <<<
+// Chemin : menu:View[Zoom > Reset]
+
+
+
+====
+
+WARNING: [.red]#Disclaimer: Cette documentation est fait dans le but d'un stage des erreurs d'orthographe peuvent être présent ainsi que des fautes de compréhension du sujet#
+====
+
+image:logo-fog02.png[]
+
+
+[.red]#Les prérequis pour l'installation et l'utilisation de FOG sur votre Machine (Laptop ou bien même serveurs):#
+
+Le système Fog était un système qui permet la réplication d'image système par PXE qui veut dire (Pre-boot eXecution Environment), ce qui permet donc à une station de travail de type PC Fixe de pouvoir démarrer grâce au réseau en récupérant une image de système d'exploitation qui se trouve sur un serveur.
+
+[.yellow]#Voici donc les spécification systèmes et matériels requis:#
+
+====
+Système d'exploitation actuellement pris en charge:
+    - Linux Ubuntu 16 ou supérieur
+    - Linux Debian 8 ou supérieur
+    - Linux CentOs 7 ou supérieur
+    - Linux Red Hat 6 ou supérieur
+    - Linux Fedora 22 ou supérieur
+    - Ainsi que toutes les versions de Arch
+
+Les paquets Linux utilisés par le systèmes sont les suivants :
+
+    - PHP 5/7
+    - Mysql 5+ ou bien MariaDB 10+
+    - Apache 2+
+    - DHCP (à peu près n'importe lequel possible !)
+    - TFTP
+    - FTP
+    - NFS
+
+En termes de matériels il nous faut juste un systèmes ayant au minimum 60GB de Stockage de préférance en SSD sinon très long pour le déploiment d'image sur le réseau et bien sur un carte réseau ([.red]#NIC, VMNIC#) qui permet d'aller jusqu'à 1GB/s
+====
+
+Lors de l'installation plusieurs chose vous seront demander, nous allons donc faire l'installation par étape:
+
+    -  Dans un premier temps il faudra : télécharger gut car sur ubuntu il n'est pas fournit dans les paquets de bases du systèmes il faut donc rentrer la commande suivante
+
+====
+    sudo apt-get install git
+====
+
+    -  puis effectuer le téléchargement du dossier d'installation qui est compresser en tar depuis leur site:
+
+====
+    git clone https://github.com/FOGProject/fogproject.git
+====
+
+    -  Une fois le téléchargement effectuer il faut donc aller dans le dossier [.green]#/bin# puis lancer l'installation avec les commandes qui suivent:
+
+====
+    cd fogproject/bin
+    ./installfog.sh
+====
+
+Ce qui déclenchera l'installation de Fog Project attention à bien suivre les étapes qui vont suivre car une mauvaise manip et vous devrez recommencer depuis le début y compris la réinstallation système.
+
+
+Vous voici donc dans l'installeur de fog la première question qu'il vous pose c'est la base d'installation qui est lié à Kernel pour notre cas nous allons selection 2 car Ubuntu est fondé sur la base de Debian.
+
+La seconde question concerne donc le type d'installation car pour Fog il existe deux facon de pouvoir l'installer:
+
+====
+    -   La première façon c'est en installation serveur normal, ce qui veut dire que le serveur sur lequelle nous nous trouvons pour l'installation est le serveur master ce qui veut dire qu'il sera le cerveau.
+
+    -   La Seconde installation sera elle plus porter pour un serveur Slave ou bien dans d'autre termes clusterisé ce qui veut dire que si l'on installe cette version il ne servira que de serveur de Stockage ou bien de son second nom "Node".
+====
+
+Pour notre nous installerons la version Normal, lors de l'installation le serveur va installer les paquets suivants si le systèmes ne l'est à pas installer de soi même:
+
+====
+    -  Le service DHCP
+    -  Le serveur web sous Apache2
+    -  Le serveur PXE
+    -  Le serveur FTP et TFTP
+    -  Le serveur NFS
+====
+
+WARNING: [.red]#Si vous installer la version Cluster seul les services TFTP, FTP ainsi que le services NFS#
+
+Par la suite le serveur va vous proposer de modifier les réglages réseaux (dans notre cote ayant plusieurs carte réseaux il va donc falloir choisir la bonne et lui effecter une ip STATIC) vous allez choisir donc "Yes"
+
+Ensuite il vous donnera des informations sur le DHCP fournit par FOG lui même.
+
+====
+WARNING: Il faut donc lui fournir une Ip DHCP ainsi que une Ip DNS qui lui serviront à la reception de demande PXE ainsi qu'a l'acceptation de la demande PXE
+====
+
+Afin d'obtenir l'ensemble du panel graphique de Fog en français il faudra donc répondre yes à la question de l'internationnalisation et par la suite refuser le HTTPS car celui-ci crée des conflits qui ne sont pas encore fix par les propriètaires du projet
+
+Etant donner que l'on viens d'affecter un addresage Ip pour le DHCP ainsi que le DNS on nous propose de lui mettre un hostname attention il faut appréalable se prémunir un DNS nous appartenant louer chez (OVH par example).
+
+====
+
+WARNING: [.red]#Pour l'étape qui suit veillez vérifier toute les choix ainsi que les informations que vous avez rentrez avant d'accepter l'installation de fog sur la machine#
+
+====
+
+Une fois l'installation terminer il vous fournira un lien qui ressemblera à ce qui va suivre :
+
+====
+
+http://votreip/fog/management
+
+====
+
+img
+
+
+Ce qui vous permettra donc de vous rendre sur la page de configuration de fog ainsi que de la liaison de la base de données entre fog et MYSQL ou bien MARIADB.
+
+Une fois sur la page cliquer le Here en [.blue]#bleu# vous allez donc tomber sur la page de paramètrage de votre liaison SQL il vous donnera la commande SQL suivant a rentré sur votre serveur :
+
+====
+
+    mysqldump ---allow-keywords -x -v fog > fogbackup.sql
+
+====
+
+Et voila fog est installer sur votre machine. Maintenant l'on va donc passer à la configuration graphique de FOG 
+
+Lors de votre première connection que vous choisisiez le francais ou non cela n'aura aucun impact car l'interface doit avoir l'autorisation de changer sa langue.
+
+Le mot de passe par défaut est le suivant:
+
+====
+    -  Utilisateur: fog
+    -  mot de passe : Password
+====
+
+Une fois connecté nous allons tout d'abord changer le mot de passe du compte administration de Fog pour cela aller dans le première onglet puis aller dans list all users puis selection l'utilisateurs "FOG" est changer son mot de passe attention cette action est irréversible si vous venez à oublier le mot de passe vous serez contraint a réinitialisé le systèmed'exploitation est de recommencer de Zéro.
+
+Voici un récap de chaque section de la barre des tâches :
+====
+-  dashboard : affiché par défaut au démarrage 
+
+-  users : pour gérer les utilisateurs 
+
+-  hosts : pour gérer les machines 
+
+-  groups : pour gérer les groupes de machines 
+
+-  images : pour gérer les images de déploiements 
+
+-  storage : pour gérer les machines de stockage secondaires 
+
+-  snapin : pour gérer les actions de déploiement 
+
+-  printer : pour gérer un spooler d’impression depuis Fog 
+
+-  client setting : pour gérer les fonctions du client installées sur les machines gérées (exemple : activer/désactiver la gestion des snapins (que nous verrons plus tard), activer/désactiver la possibilité de reboot distant)
+
+-  tasks : pour le suivi des tâches en cours 
+
+-  reports : permet de générer des rapports en CSV ou PDF 
+
+-  configuration : pour effectuer des réglages de FOGProject.
+====
